@@ -10,6 +10,7 @@ import SwiftUI
 
 struct ContentView: View
 {
+    // copied from the physical Paroliere 4x4 dice
     let diceLetters = [
         ["L","E","P","U","S","T"],
         ["O","E","U","N","C","T"],
@@ -40,84 +41,95 @@ struct ContentView: View
     func useProxy(_ geometry: GeometryProxy) -> some View
     {
         let dimension = min(geometry.size.width, geometry.size.height)
+        let shuffledDiceLetters = shuffleDiceLetters()
         return VStack
         {
             HStack(spacing: 0)
             {
-                Text("Top Left")
+                Text(shuffledDiceLetters[0])
                     .frame(width: dimension / 4, height: dimension / 4)
                     .border(Color.black)
 
-                Text("Top Right")
+                Text(shuffledDiceLetters[1])
                    .frame(width: dimension / 4, height: dimension / 4)
                    .border(Color.black)
                 
-                Text("Top Right")
+                Text(shuffledDiceLetters[2])
                 .frame(width: dimension / 4, height: dimension / 4)
                 .border(Color.black)
                 
-                Text("Top Right")
+                Text(shuffledDiceLetters[3])
                 .frame(width: dimension / 4, height: dimension / 4)
                 .border(Color.black)
             }
 
             HStack(spacing: 0)
             {
-                Text("Bottom Left")
+                Text(shuffledDiceLetters[4])
                     .frame(width: dimension / 4, height: dimension / 4)
                     .border(Color.black)
 
-                Text("Bottom Right")
+                Text(shuffledDiceLetters[5])
                    .frame(width: dimension / 4, height: dimension / 4)
                    .border(Color.black)
                 
-                Text("Top Right")
+                Text(shuffledDiceLetters[6])
                 .frame(width: dimension / 4, height: dimension / 4)
                 .border(Color.black)
                 
-                Text("Top Right")
-                .frame(width: dimension / 4, height: dimension / 4)
-                .border(Color.black)
-            }
-            
-            HStack(spacing: 0)
-            {
-                Text("Bottom Left")
-                    .frame(width: dimension / 4, height: dimension / 4)
-                    .border(Color.black)
-
-                Text("Bottom Right")
-                   .frame(width: dimension / 4, height: dimension / 4)
-                   .border(Color.black)
-                
-                Text("Top Right")
-                .frame(width: dimension / 4, height: dimension / 4)
-                .border(Color.black)
-                
-                Text("Top Right")
+                Text(shuffledDiceLetters[7])
                 .frame(width: dimension / 4, height: dimension / 4)
                 .border(Color.black)
             }
             
             HStack(spacing: 0)
             {
-                Text("Bottom Left")
+                Text(shuffledDiceLetters[8])
                     .frame(width: dimension / 4, height: dimension / 4)
                     .border(Color.black)
 
-                Text("Bottom Right")
+                Text(shuffledDiceLetters[9])
                    .frame(width: dimension / 4, height: dimension / 4)
                    .border(Color.black)
                 
-                Text("Top Right")
+                Text(shuffledDiceLetters[10])
                 .frame(width: dimension / 4, height: dimension / 4)
                 .border(Color.black)
                 
-                Text("Top Right")
+                Text(shuffledDiceLetters[11])
+                .frame(width: dimension / 4, height: dimension / 4)
+                .border(Color.black)
+            }
+            
+            HStack(spacing: 0)
+            {
+                Text(shuffledDiceLetters[12])
+                    .frame(width: dimension / 4, height: dimension / 4)
+                    .border(Color.black)
+
+                Text(shuffledDiceLetters[13])
+                   .frame(width: dimension / 4, height: dimension / 4)
+                   .border(Color.black)
+                
+                Text(shuffledDiceLetters[14])
+                .frame(width: dimension / 4, height: dimension / 4)
+                .border(Color.black)
+                
+                Text(shuffledDiceLetters[15])
                 .frame(width: dimension / 4, height: dimension / 4)
                 .border(Color.black)
             }
         }
+    }
+    
+    func shuffleDiceLetters() -> [String] {
+        var shuffledDiceLetters = [String]()
+        var diceLettersCopy = diceLetters
+        diceLettersCopy.shuffle()
+        for die in diceLettersCopy {
+            shuffledDiceLetters.append(die.randomElement()!)
+        }
+        return shuffledDiceLetters
     }
 }
 
