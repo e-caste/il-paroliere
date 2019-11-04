@@ -33,6 +33,8 @@ struct ContentView: View
     // initialized stateful variable
     @State var shuffledDiceLetters = ["A","B","C","D","E","F","G","H","I","L","M","N","O","P","Q","R"]
     @State var diceOpacity = 0.01
+    @State var timeRemaining = 0
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     func shuffleDiceLetters() -> [String] {
         var shuffledDiceLetters = [String]()
@@ -44,18 +46,16 @@ struct ContentView: View
         return shuffledDiceLetters
     }
     
-    mutating func _shuffleDiceLetters() -> Void {
-        self.shuffledDiceLetters.removeAll()
-        for die in diceLetters.shuffled() {
-            self.shuffledDiceLetters.append(die.randomElement()!)
-        }
-    }
+//    mutating func _shuffleDiceLetters() -> Void {
+//        self.shuffledDiceLetters.removeAll()
+//        for die in diceLetters.shuffled() {
+//            self.shuffledDiceLetters.append(die.randomElement()!)
+//        }
+//    }
     
     // TODO: add support for Dark Mode
     // TODO: tweak font
-    // TODO: add timer
     // TODO: add alert when timer is finished
-    // TODO: add veil on top of dice until timer starts
     var body: some View {
         VStack {
             Text("Il Paroliere")
@@ -69,9 +69,16 @@ struct ContentView: View
                 self.useProxy(geometry)
             }
             .padding()
-            .opacity(getDiceOpacity())
+            .opacity(diceOpacity)
             
-            // timer
+            Text("".appendingFormat("%02d:%02d",
+                                            timeRemaining / 60,
+                                            timeRemaining % 60))
+            .onReceive(timer) { _ in
+                if self.timeRemaining > 0 {
+                    self.timeRemaining -= 1
+                }
+            }
             
             Button(action: {
                 self.shuffledDiceLetters = self.shuffleDiceLetters()
@@ -100,8 +107,7 @@ struct ContentView: View
     }
     
     func startTimerAndUnveilDice() {
-        
-        
+        self.setTimeRemaining(timeInSeconds: 180)
         self.setDiceOpacity(opacityValue: 1.0)
     }
     
@@ -109,8 +115,8 @@ struct ContentView: View
         self.diceOpacity = opacityValue
     }
     
-    func getDiceOpacity() -> Double {
-        return self.diceOpacity
+    func setTimeRemaining(timeInSeconds: Int) -> Void {
+        self.timeRemaining = timeInSeconds
     }
     
     func useProxy(_ geometry: GeometryProxy) -> some View {
