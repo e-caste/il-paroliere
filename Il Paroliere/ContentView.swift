@@ -34,7 +34,8 @@ struct ContentView: View
     @State var shuffledDiceLetters = ["A","B","C","D","E","F","G","H","I","L","M","N","O","P","Q","R"]
     @State var diceOpacity = 0.01
     @State var timeRemaining = 0
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    @State var timer = Timer.publish(every: TimeInterval(MAXFLOAT), on: .main, in: .common).autoconnect() // so that you don't see an alert on startup
+    @State private var showingAlert = false
     
     func shuffleDiceLetters() -> [String] {
         var shuffledDiceLetters = [String]()
@@ -43,6 +44,8 @@ struct ContentView: View
         }
         // cover dice so they can't be seen until the game begins
         self.setDiceOpacity(opacityValue: 0.01)
+        // stop timer
+        self.timer = Timer.publish(every: TimeInterval(MAXFLOAT), on: .main, in: .common).autoconnect()
         return shuffledDiceLetters
     }
     
@@ -53,16 +56,13 @@ struct ContentView: View
 //        }
 //    }
     
-    // TODO: add support for Dark Mode
-    // TODO: tweak font
-    // TODO: add alert when timer is finished
+    // TODO: disable screen auto-lock
     var body: some View {
         VStack {
             Text("Il Paroliere")
                 .font(.largeTitle)
                 .fontWeight(.heavy)
-                .multilineTextAlignment(.leading)
-                .padding(.trailing)
+                .padding(.top)
             
             GeometryReader {
                 geometry in
@@ -74,10 +74,19 @@ struct ContentView: View
             Text("".appendingFormat("%02d:%02d",
                                             timeRemaining / 60,
                                             timeRemaining % 60))
-            .onReceive(timer) { _ in
-                if self.timeRemaining > 0 {
-                    self.timeRemaining -= 1
-                }
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .onReceive(timer) { _ in
+                    if self.timeRemaining > 0 {
+                        self.timeRemaining -= 1
+                    }
+                    else {
+                        self.showingAlert = true
+                        self.timer = Timer.publish(every: TimeInterval(MAXFLOAT), on: .main, in: .common).autoconnect()
+               }
+            }
+            .alert(isPresented: $showingAlert) {
+                Alert(title: Text("Timer scaduto"), message: Text("Giù le penne!"), dismissButton: .default(Text("OK Capo")))
             }
             
             Button(action: {
@@ -107,6 +116,7 @@ struct ContentView: View
     }
     
     func startTimerAndUnveilDice() {
+        self.timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
         self.setTimeRemaining(timeInSeconds: 180)
         self.setDiceOpacity(opacityValue: 1.0)
     }
@@ -124,74 +134,106 @@ struct ContentView: View
         return VStack {
             HStack(spacing: 0) {
                 Text(self.shuffledDiceLetters[0])
+                    .font(.largeTitle)
+                    .fontWeight(.black)
                     .frame(width: dimension / 4, height: dimension / 4)
                     .border(Color.black)
 
                 Text(self.shuffledDiceLetters[1])
+                    .font(.largeTitle)
+                    .fontWeight(.black)
                    .frame(width: dimension / 4, height: dimension / 4)
                    .border(Color.black)
                 
                 Text(self.shuffledDiceLetters[2])
-                .frame(width: dimension / 4, height: dimension / 4)
-                .border(Color.black)
+                    .font(.largeTitle)
+                    .fontWeight(.black)
+                    .frame(width: dimension / 4, height: dimension / 4)
+                    .border(Color.black)
                 
                 Text(self.shuffledDiceLetters[3])
-                .frame(width: dimension / 4, height: dimension / 4)
-                .border(Color.black)
+                    .font(.largeTitle)
+                    .fontWeight(.black)
+                    .frame(width: dimension / 4, height: dimension / 4)
+                    .border(Color.black)
             }
 
             HStack(spacing: 0) {
                 Text(self.shuffledDiceLetters[4])
+                    .font(.largeTitle)
+                    .fontWeight(.black)
                     .frame(width: dimension / 4, height: dimension / 4)
                     .border(Color.black)
 
                 Text(self.shuffledDiceLetters[5])
+                    .font(.largeTitle)
+                    .fontWeight(.black)
                    .frame(width: dimension / 4, height: dimension / 4)
                    .border(Color.black)
                 
                 Text(self.shuffledDiceLetters[6])
-                .frame(width: dimension / 4, height: dimension / 4)
-                .border(Color.black)
+                    .font(.largeTitle)
+                    .fontWeight(.black)
+                    .frame(width: dimension / 4, height: dimension / 4)
+                    .border(Color.black)
                 
                 Text(self.shuffledDiceLetters[7])
-                .frame(width: dimension / 4, height: dimension / 4)
-                .border(Color.black)
+                    .font(.largeTitle)
+                    .fontWeight(.black)
+                    .frame(width: dimension / 4, height: dimension / 4)
+                    .border(Color.black)
             }
             
             HStack(spacing: 0) {
                 Text(self.shuffledDiceLetters[8])
+                    .font(.largeTitle)
+                    .fontWeight(.black)
                     .frame(width: dimension / 4, height: dimension / 4)
                     .border(Color.black)
 
                 Text(self.shuffledDiceLetters[9])
+                    .font(.largeTitle)
+                    .fontWeight(.black)
                    .frame(width: dimension / 4, height: dimension / 4)
                    .border(Color.black)
                 
                 Text(self.shuffledDiceLetters[10])
-                .frame(width: dimension / 4, height: dimension / 4)
-                .border(Color.black)
+                    .font(.largeTitle)
+                    .fontWeight(.black)
+                    .frame(width: dimension / 4, height: dimension / 4)
+                    .border(Color.black)
                 
                 Text(self.shuffledDiceLetters[11])
-                .frame(width: dimension / 4, height: dimension / 4)
-                .border(Color.black)
+                    .font(.largeTitle)
+                    .fontWeight(.black)
+                    .frame(width: dimension / 4, height: dimension / 4)
+                    .border(Color.black)
             }
             
             HStack(spacing: 0) {
                 Text(self.shuffledDiceLetters[12])
+                    .font(.largeTitle)
+                    .fontWeight(.black)
                     .frame(width: dimension / 4, height: dimension / 4)
                     .border(Color.black)
 
                 Text(self.shuffledDiceLetters[13])
+                    .font(.largeTitle)
+                    .fontWeight(.black)
                    .frame(width: dimension / 4, height: dimension / 4)
                    .border(Color.black)
                 
                 Text(self.shuffledDiceLetters[14])
-                .frame(width: dimension / 4, height: dimension / 4)
-                .border(Color.black)
+                    .font(.largeTitle)
+                    .fontWeight(.black)
+                    .frame(width: dimension / 4, height: dimension / 4)
+                    .border(Color.black)
                 
                 Text(self.shuffledDiceLetters[15])
-                .frame(width: dimension / 4, height: dimension / 4)
-                .border(Color.black)
+                    .font(.largeTitle)
+                    .fontWeight(.black)
+                    .frame(width: dimension / 4, height: dimension / 4)
+                    .border(Color.black)
             }
         }
     }
@@ -202,6 +244,3 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
-
-
-
