@@ -32,12 +32,15 @@ struct ContentView: View
     
     // initialized stateful variable
     @State var shuffledDiceLetters = ["A","B","C","D","E","F","G","H","I","L","M","N","O","P","Q","R"]
+    @State var diceOpacity = 0.01
     
     func shuffleDiceLetters() -> [String] {
         var shuffledDiceLetters = [String]()
         for die in diceLetters.shuffled() {
             shuffledDiceLetters.append(die.randomElement()!)
         }
+        // cover dice so they can't be seen until the game begins
+        self.setDiceOpacity(opacityValue: 0.01)
         return shuffledDiceLetters
     }
     
@@ -48,13 +51,27 @@ struct ContentView: View
         }
     }
     
+    // TODO: add support for Dark Mode
+    // TODO: tweak font
+    // TODO: add timer
+    // TODO: add alert when timer is finished
+    // TODO: add veil on top of dice until timer starts
     var body: some View {
         VStack {
+            Text("Il Paroliere")
+                .font(.largeTitle)
+                .fontWeight(.heavy)
+                .multilineTextAlignment(.leading)
+                .padding(.trailing)
+            
             GeometryReader {
                 geometry in
                 self.useProxy(geometry)
             }
             .padding()
+            .opacity(getDiceOpacity())
+            
+            // timer
             
             Button(action: {
                 self.shuffledDiceLetters = self.shuffleDiceLetters()
@@ -66,18 +83,34 @@ struct ContentView: View
             }
             .padding()
             
-//            Button(){
-//                HStack {
-//                    Image(systemName: "hourglass")
-//                    Text("Scopri i dadi e gira la clessidra")
-//                }
-//            }
-//            .padding()
+            Button(action: {
+                self.startTimerAndUnveilDice()
+            }){
+                HStack {
+                    Image(systemName: "hourglass")
+                    Text("Scopri i dadi e gira la clessidra")
+                }
+            }
+            .padding()
         }
         .onAppear(perform: {
                         self.shuffledDiceLetters = self.shuffleDiceLetters()
                     })
     
+    }
+    
+    func startTimerAndUnveilDice() {
+        
+        
+        self.setDiceOpacity(opacityValue: 1.0)
+    }
+    
+    func setDiceOpacity(opacityValue: Double) -> Void {
+        self.diceOpacity = opacityValue
+    }
+    
+    func getDiceOpacity() -> Double {
+        return self.diceOpacity
     }
     
     func useProxy(_ geometry: GeometryProxy) -> some View {
