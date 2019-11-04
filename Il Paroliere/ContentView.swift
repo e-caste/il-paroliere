@@ -30,97 +30,8 @@ struct ContentView: View
         ["N","U","L","E","G","O"]
     ]
     
-    var body: some View
-    {
-        GeometryReader
-        { geometry in
-            self.useProxy(geometry)
-        }
-    }
-
-    func useProxy(_ geometry: GeometryProxy) -> some View
-    {
-        let dimension = min(geometry.size.width, geometry.size.height)
-        let shuffledDiceLetters = shuffleDiceLetters()
-        return VStack
-        {
-            HStack(spacing: 0)
-            {
-                Text(shuffledDiceLetters[0])
-                    .frame(width: dimension / 4, height: dimension / 4)
-                    .border(Color.black)
-
-                Text(shuffledDiceLetters[1])
-                   .frame(width: dimension / 4, height: dimension / 4)
-                   .border(Color.black)
-                
-                Text(shuffledDiceLetters[2])
-                .frame(width: dimension / 4, height: dimension / 4)
-                .border(Color.black)
-                
-                Text(shuffledDiceLetters[3])
-                .frame(width: dimension / 4, height: dimension / 4)
-                .border(Color.black)
-            }
-
-            HStack(spacing: 0)
-            {
-                Text(shuffledDiceLetters[4])
-                    .frame(width: dimension / 4, height: dimension / 4)
-                    .border(Color.black)
-
-                Text(shuffledDiceLetters[5])
-                   .frame(width: dimension / 4, height: dimension / 4)
-                   .border(Color.black)
-                
-                Text(shuffledDiceLetters[6])
-                .frame(width: dimension / 4, height: dimension / 4)
-                .border(Color.black)
-                
-                Text(shuffledDiceLetters[7])
-                .frame(width: dimension / 4, height: dimension / 4)
-                .border(Color.black)
-            }
-            
-            HStack(spacing: 0)
-            {
-                Text(shuffledDiceLetters[8])
-                    .frame(width: dimension / 4, height: dimension / 4)
-                    .border(Color.black)
-
-                Text(shuffledDiceLetters[9])
-                   .frame(width: dimension / 4, height: dimension / 4)
-                   .border(Color.black)
-                
-                Text(shuffledDiceLetters[10])
-                .frame(width: dimension / 4, height: dimension / 4)
-                .border(Color.black)
-                
-                Text(shuffledDiceLetters[11])
-                .frame(width: dimension / 4, height: dimension / 4)
-                .border(Color.black)
-            }
-            
-            HStack(spacing: 0)
-            {
-                Text(shuffledDiceLetters[12])
-                    .frame(width: dimension / 4, height: dimension / 4)
-                    .border(Color.black)
-
-                Text(shuffledDiceLetters[13])
-                   .frame(width: dimension / 4, height: dimension / 4)
-                   .border(Color.black)
-                
-                Text(shuffledDiceLetters[14])
-                .frame(width: dimension / 4, height: dimension / 4)
-                .border(Color.black)
-                
-                Text(shuffledDiceLetters[15])
-                .frame(width: dimension / 4, height: dimension / 4)
-                .border(Color.black)
-            }
-        }
-    }
+    // initialized stateful variable
+    @State var shuffledDiceLetters = ["A","B","C","D","E","F","G","H","I","L","M","N","O","P","Q","R"]
     
     func shuffleDiceLetters() -> [String] {
         var shuffledDiceLetters = [String]()
@@ -129,14 +40,123 @@ struct ContentView: View
         }
         return shuffledDiceLetters
     }
-}
+    
+    mutating func _shuffleDiceLetters() -> Void {
+        self.shuffledDiceLetters.removeAll()
+        for die in diceLetters.shuffled() {
+            self.shuffledDiceLetters.append(die.randomElement()!)
+        }
+    }
+    
+    var body: some View {
+        VStack {
+            GeometryReader {
+                geometry in
+                self.useProxy(geometry)
+            }
+            .padding()
+            
+            Button(action: {
+                self.shuffledDiceLetters = self.shuffleDiceLetters()
+            }){
+                HStack {
+                    Image(systemName: "arrow.clockwise.circle")
+                    Text("Mischia i dadi")
+                }
+            }
+            .padding()
+            
+//            Button(){
+//                HStack {
+//                    Image(systemName: "hourglass")
+//                    Text("Scopri i dadi e gira la clessidra")
+//                }
+//            }
+//            .padding()
+        }
+        .onAppear(perform: {
+                        self.shuffledDiceLetters = self.shuffleDiceLetters()
+                    })
+    
+    }
+    
+    func useProxy(_ geometry: GeometryProxy) -> some View {
+        let dimension = min(geometry.size.width, geometry.size.height)
+        return VStack {
+            HStack(spacing: 0) {
+                Text(self.shuffledDiceLetters[0])
+                    .frame(width: dimension / 4, height: dimension / 4)
+                    .border(Color.black)
 
-//struct ContentView: View {
-//    var body: some View {
-//        Text("Hello World")
-////        Array(repeating: [0,0,0,0], count: 4)
-//    }
-//}
+                Text(self.shuffledDiceLetters[1])
+                   .frame(width: dimension / 4, height: dimension / 4)
+                   .border(Color.black)
+                
+                Text(self.shuffledDiceLetters[2])
+                .frame(width: dimension / 4, height: dimension / 4)
+                .border(Color.black)
+                
+                Text(self.shuffledDiceLetters[3])
+                .frame(width: dimension / 4, height: dimension / 4)
+                .border(Color.black)
+            }
+
+            HStack(spacing: 0) {
+                Text(self.shuffledDiceLetters[4])
+                    .frame(width: dimension / 4, height: dimension / 4)
+                    .border(Color.black)
+
+                Text(self.shuffledDiceLetters[5])
+                   .frame(width: dimension / 4, height: dimension / 4)
+                   .border(Color.black)
+                
+                Text(self.shuffledDiceLetters[6])
+                .frame(width: dimension / 4, height: dimension / 4)
+                .border(Color.black)
+                
+                Text(self.shuffledDiceLetters[7])
+                .frame(width: dimension / 4, height: dimension / 4)
+                .border(Color.black)
+            }
+            
+            HStack(spacing: 0) {
+                Text(self.shuffledDiceLetters[8])
+                    .frame(width: dimension / 4, height: dimension / 4)
+                    .border(Color.black)
+
+                Text(self.shuffledDiceLetters[9])
+                   .frame(width: dimension / 4, height: dimension / 4)
+                   .border(Color.black)
+                
+                Text(self.shuffledDiceLetters[10])
+                .frame(width: dimension / 4, height: dimension / 4)
+                .border(Color.black)
+                
+                Text(self.shuffledDiceLetters[11])
+                .frame(width: dimension / 4, height: dimension / 4)
+                .border(Color.black)
+            }
+            
+            HStack(spacing: 0) {
+                Text(self.shuffledDiceLetters[12])
+                    .frame(width: dimension / 4, height: dimension / 4)
+                    .border(Color.black)
+
+                Text(self.shuffledDiceLetters[13])
+                   .frame(width: dimension / 4, height: dimension / 4)
+                   .border(Color.black)
+                
+                Text(self.shuffledDiceLetters[14])
+                .frame(width: dimension / 4, height: dimension / 4)
+                .border(Color.black)
+                
+                Text(self.shuffledDiceLetters[15])
+                .frame(width: dimension / 4, height: dimension / 4)
+                .border(Color.black)
+            }
+        }
+    }
+}
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
