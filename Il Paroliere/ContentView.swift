@@ -124,9 +124,7 @@ struct ContentView: View
     
     func shuffleDiceLetters() -> [String] {
         var shuffledDiceLetters = [String]()
-        var diceLettersCopy = diceLetters
-        diceLettersCopy.shuffle()
-        for die in diceLettersCopy {
+        for die in diceLetters.shuffled() {
             shuffledDiceLetters.append(die.randomElement()!)
         }
         return shuffledDiceLetters
