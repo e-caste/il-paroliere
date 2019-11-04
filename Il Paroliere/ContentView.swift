@@ -49,14 +49,8 @@ struct ContentView: View
         return shuffledDiceLetters
     }
     
-//    mutating func _shuffleDiceLetters() -> Void {
-//        self.shuffledDiceLetters.removeAll()
-//        for die in diceLetters.shuffled() {
-//            self.shuffledDiceLetters.append(die.randomElement()!)
-//        }
-//    }
-    
     // TODO: disable screen auto-lock
+    // TODO: disable screen auto-rotate
     var body: some View {
         VStack {
             Text("Il Paroliere")
@@ -107,7 +101,7 @@ struct ContentView: View
                     Text("Scopri i dadi e gira la clessidra")
                 }
             }
-            .padding()
+            .padding(.bottom, 32.0)
         }
         .onAppear(perform: {
                         self.shuffledDiceLetters = self.shuffleDiceLetters()
