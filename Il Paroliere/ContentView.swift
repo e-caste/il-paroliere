@@ -50,7 +50,6 @@ struct ContentView: View
     }
     
     // TODO: disable screen auto-lock
-    // TODO: disable screen auto-rotate
     var body: some View {
         VStack {
             Text("Il Paroliere")
@@ -105,7 +104,8 @@ struct ContentView: View
         }
         .onAppear(perform: {
                         self.shuffledDiceLetters = self.shuffleDiceLetters()
-                    })
+        })
+            
     
     }
     

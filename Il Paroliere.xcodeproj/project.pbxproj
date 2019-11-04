@@ -16,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		83007B972370CDE100AAF6C9 /* Il Paroliere.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Il Paroliere.entitlements"; sourceTree = "<group>"; };
 		83DA17AF23701BD8006DDFA3 /* Il Paroliere.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Il Paroliere.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		83DA17B223701BD8006DDFA3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		83DA17B423701BD8006DDFA3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -56,6 +57,7 @@
 		83DA17B123701BD8006DDFA3 /* Il Paroliere */ = {
 			isa = PBXGroup;
 			children = (
+				83007B972370CDE100AAF6C9 /* Il Paroliere.entitlements */,
 				83DA17B223701BD8006DDFA3 /* AppDelegate.swift */,
 				83DA17B423701BD8006DDFA3 /* SceneDelegate.swift */,
 				83DA17B623701BD8006DDFA3 /* ContentView.swift */,
@@ -284,7 +286,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Il Paroliere/Il Paroliere.entitlements";
 				CODE_SIGN_STYLE = Automatic;
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Il Paroliere/Preview Content\"";
 				DEVELOPMENT_TEAM = 2658TE5G7X;
 				ENABLE_PREVIEWS = YES;
@@ -295,6 +299,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "caste.Il-Paroliere";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -304,7 +309,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Il Paroliere/Il Paroliere.entitlements";
 				CODE_SIGN_STYLE = Automatic;
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Il Paroliere/Preview Content\"";
 				DEVELOPMENT_TEAM = 2658TE5G7X;
 				ENABLE_PREVIEWS = YES;
@@ -315,6 +322,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "caste.Il-Paroliere";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
