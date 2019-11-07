@@ -40,6 +40,7 @@ struct ContentView: View
     @State var timeRemaining = 0
     @State var timer = Timer.publish(every: TimeInterval(MAXFLOAT), on: .main, in: .common).autoconnect() // so that you don't see an alert on startup
     @State private var showingAlert = false
+    @State private var rulesArePresented = false
     
     class TextShuffledAndRotated {
         var id = UUID() // needed to satisfy Hashable requirement
@@ -74,13 +75,41 @@ struct ContentView: View
         return shuffledDiceLettersAndRotations
     }
     
-    // TODO: disable screen auto-lock
+    
     var body: some View {
         VStack {
-            Text("Il Paroliere")
+            HStack {
+                Text("Il Paroliere")
                 .font(.largeTitle)
                 .fontWeight(.heavy)
-                .padding(.top)
+                .multilineTextAlignment(.leading)
+                    .padding([.top, .leading])
+                
+                Spacer()
+                
+                Button(action: {
+                    self.rulesArePresented.toggle()
+                }) { // Button to show the modal view by toggling the state
+                    Text("Regole")
+                        .multilineTextAlignment(.trailing)
+                        .padding([.top, .trailing])
+                }.sheet(isPresented: $rulesArePresented) { // Passing the state to the sheet API
+                    Form {
+                        Section(header: Text("Punteggi")){
+                            Text("1-2 lettere: 0 punti\n3-4 lettere: 1 punto\n5 lettere: 2 punti\n6 lettere: 3 punti\n7 lettere: 5 punti\n8+ lettere: 11 punti")
+                        }
+                        Section(header: Text("Per iniziare")){
+                            Text("Ogni giocatore ha bisogno di un metodo per segnarsi le parole che trova tra i dadi, sia esso carta e penna o una nota sul telefono. Il numero massimo di giocatori è determinato da quante persone riescono a leggere lo schermo contemporaneamente.")
+                        }
+                        Section(header: Text("Regole del gioco")){
+                            Text("Si tocca il tasto 'Mischia i dadi', che simula lo scuotimento rumoroso dei dadi del Paroliere da tavolo e li copre. Quando tutti i giocatori sono pronti, si tocca il tasto 'Scopri i dadi e gira la clessidra' per far partire il timer da 3 minuti.\nLo scopo del gioco è trovare il maggior numero possibile di parole nel tempo dato composte da lettere adiacenti sia ortogonalmente che diagonalmente, senza far copiare gli avversari. È vietato comporre una parola saltando una lettera o ripassando sullo stessa lettera.\nUna volta terminato il tempo a disposizione, i giocatori devono smettere di scrivere e a turno ciascuno deve leggere le proprie parole: se una stessa parola è stata trovata da più giocatori, essi dovranno cancellarla dal proprio elenco. Se una parola è ritenuta non valida dagli altri giocatori, si può cercare su un dizionario per stabilirne la validità.")
+                        }
+                        Section(header: Text("Validità delle parole")){
+                            Text("Sono ammesse le tipologie di parole determinate dal gruppo di giocatori. In generale, si possono usare le seguenti linee guida:\nsostantivi e aggettivi al maschile/femminile singolare/plurale, verbi all'infinito, avverbi, congiunzioni, interiezioni, onomatopee, preposizioni e pronomi sono sempre validi;\nverbi coniugati, sigle, parole straniere di uso comune in Italiano, nomi propri e geografici possono essere aggiunti per semplificare il gioco.")
+                        }
+                    }
+                }
+            }
             
             GeometryReader {
                 geometry in
@@ -150,20 +179,7 @@ struct ContentView: View
     
     func useProxy(_ geometry: GeometryProxy) -> some View {
         let dimension = min(geometry.size.width, geometry.size.height)
-//        for i in 0...3 {
-//            for j in 0...3 {
-//                rotations[i][j] = possibleRotations.randomElement()!
-//            }
-//        }
-        // make list of 16 TextShuffledAndRotated objects
-//        for i in 0...3 {
-//            for j in 0...3 {
-//                shuffledDiceLettersAndRotations[i][j] = TextShuffledAndRotated(text: <#T##String#>, rotation: <#T##Double#>)
-//            }
-//        }
-//        for (i, (j, (letter, rotation))) in zip(0...3, zip(0...3, zip(self.shuffledDiceLetters, rotations))) {
-//            shuffledDiceLettersAndRotations[i][j] = TextShuffledAndRotated(text: letter, rotation: rotation)
-//        }
+
         // make 16 views for letters
 //        return VStack {
 //            ForEach(shuffledDiceLettersAndRotations, id: \.id){letterAndRotation in
@@ -285,15 +301,6 @@ struct ContentView: View
         }  // end of VStack
     }
 }
-
-//struct TextShuffledAndRotatedView : View {
-//    Text()
-//    .font(.largeTitle)
-//    .fontWeight(.black)
-//    .frame(width: dimension / 4, height: dimension / 4)
-//    .border(Color.black)
-//    .rotationEffect(.degrees(180))
-//}
 
 //struct TextShuffledAndRotatedStyle: ViewModifier {
 //    typealias Body = <#type#>
