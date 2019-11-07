@@ -21,7 +21,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         // Create the SwiftUI view that provides the window contents.
         let contentView = ContentView()
-
+        UIApplication.shared.isIdleTimerDisabled = true // prevent screen from going to sleep while app is running
+        
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
