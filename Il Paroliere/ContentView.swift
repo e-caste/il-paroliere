@@ -33,7 +33,9 @@ struct ContentView: View
     let possibleRotations: [Double] = [0.0, 90.0, 180.0, 270.0] // 360.0 == 0.0 -- 0.0=N, 90.0=E=RX, 180.0=S, 270.0=W=LX
     
     // initialized stateful variable
-    @State var shuffledDiceLetters = ["A","B","C","D","E","F","G","H","I","L","M","N","O","P","Q","R"]
+    @State var shuffledDiceLettersAndRotations = [TextShuffledAndRotated](
+        repeating: TextShuffledAndRotated(text: "A", rotation: 0.0), count: 16
+    )
     @State var diceOpacity = 0.01
     @State var timeRemaining = 0
     @State var timer = Timer.publish(every: TimeInterval(MAXFLOAT), on: .main, in: .common).autoconnect() // so that you don't see an alert on startup
@@ -49,8 +51,9 @@ struct ContentView: View
         }
     }
     
-    func shuffleDiceLetters() -> [String] {
+    func shuffleDiceLettersAndRotations() -> [TextShuffledAndRotated] {
         var shuffledDiceLetters = [String]()
+        // shuffle dice letters and positions
         for die in diceLetters.shuffled() {
             shuffledDiceLetters.append(die.randomElement()!)
         }
@@ -58,7 +61,17 @@ struct ContentView: View
         self.setDiceOpacity(opacityValue: 0.01)
         // stop timer
         self.timer = Timer.publish(every: TimeInterval(MAXFLOAT), on: .main, in: .common).autoconnect()
-        return shuffledDiceLetters
+        // make a list of 16 rotations extracted from possibleRotations
+        var rotations = [Double]()
+        // shuffle dice rotations
+        for _ in 0...15 {
+            rotations.append(possibleRotations.randomElement()!)
+        }
+        var shuffledDiceLettersAndRotations = [TextShuffledAndRotated]()
+        for (letter, rotation) in zip(shuffledDiceLetters, rotations) {
+            shuffledDiceLettersAndRotations.append(TextShuffledAndRotated(text: letter, rotation: rotation))
+        }
+        return shuffledDiceLettersAndRotations
     }
     
     // TODO: disable screen auto-lock
@@ -95,7 +108,7 @@ struct ContentView: View
             }
             
             Button(action: {
-                self.shuffledDiceLetters = self.shuffleDiceLetters()
+                self.shuffledDiceLettersAndRotations = self.shuffleDiceLettersAndRotations()
             }){
                 HStack {
                     Image(systemName: "arrow.clockwise.circle")
@@ -115,7 +128,7 @@ struct ContentView: View
             .padding(.bottom, 32.0)
         }
         .onAppear(perform: {
-                        self.shuffledDiceLetters = self.shuffleDiceLetters()
+                        self.shuffledDiceLettersAndRotations = self.shuffleDiceLettersAndRotations()
         })
             
     
@@ -137,21 +150,12 @@ struct ContentView: View
     
     func useProxy(_ geometry: GeometryProxy) -> some View {
         let dimension = min(geometry.size.width, geometry.size.height)
-        // make a list of 16 rotations extracted from possibleRotations
-        var rotations = [Double]()
-        for _ in 0...15 {
-            rotations.append(possibleRotations.randomElement()!)
-        }
 //        for i in 0...3 {
 //            for j in 0...3 {
 //                rotations[i][j] = possibleRotations.randomElement()!
 //            }
 //        }
         // make list of 16 TextShuffledAndRotated objects
-        var shuffledDiceLettersAndRotations = [TextShuffledAndRotated]()
-        for (letter, rotation) in zip(self.shuffledDiceLetters, rotations) {
-            shuffledDiceLettersAndRotations.append(TextShuffledAndRotated(text: letter, rotation: rotation))
-        }
 //        for i in 0...3 {
 //            for j in 0...3 {
 //                shuffledDiceLettersAndRotations[i][j] = TextShuffledAndRotated(text: <#T##String#>, rotation: <#T##Double#>)
@@ -174,110 +178,109 @@ struct ContentView: View
 //            }
 //        }
         
-        // TODO: prevent rotationEffect to be played every Timer clock
         return VStack {
             HStack(spacing: 0) {
-                Text(self.shuffledDiceLetters[0])
+                Text(self.shuffledDiceLettersAndRotations[0].text)
                     .font(.largeTitle)
                     .fontWeight(.black)
                     .frame(width: dimension / 4, height: dimension / 4)
-                    .rotationEffect(.degrees(rotations[0]))
+                    .rotationEffect(.degrees(self.shuffledDiceLettersAndRotations[0].rotation))
 
-                Text(self.shuffledDiceLetters[1])
+                Text(self.shuffledDiceLettersAndRotations[1].text)
                     .font(.largeTitle)
                     .fontWeight(.black)
                     .frame(width: dimension / 4, height: dimension / 4)
-                    .rotationEffect(.degrees(rotations[1]))
+                    .rotationEffect(.degrees(self.shuffledDiceLettersAndRotations[1].rotation))
 
-                Text(self.shuffledDiceLetters[2])
+                Text(self.shuffledDiceLettersAndRotations[2].text)
                     .font(.largeTitle)
                     .fontWeight(.black)
                     .frame(width: dimension / 4, height: dimension / 4)
-                    .rotationEffect(.degrees(rotations[2]))
+                    .rotationEffect(.degrees(self.shuffledDiceLettersAndRotations[2].rotation))
 
-                Text(self.shuffledDiceLetters[3])
+                Text(self.shuffledDiceLettersAndRotations[3].text)
                     .font(.largeTitle)
                     .fontWeight(.black)
                     .frame(width: dimension / 4, height: dimension / 4)
-                    .rotationEffect(.degrees(rotations[3]))
+                    .rotationEffect(.degrees(self.shuffledDiceLettersAndRotations[3].rotation))
             }
 
             HStack(spacing: 0) {
-                Text(self.shuffledDiceLetters[4])
+                Text(self.shuffledDiceLettersAndRotations[4].text)
                     .font(.largeTitle)
                     .fontWeight(.black)
                     .frame(width: dimension / 4, height: dimension / 4)
-                    .rotationEffect(.degrees(rotations[4]))
+                    .rotationEffect(.degrees(self.shuffledDiceLettersAndRotations[4].rotation))
 
-                Text(self.shuffledDiceLetters[5])
+                Text(self.shuffledDiceLettersAndRotations[5].text)
                     .font(.largeTitle)
                     .fontWeight(.black)
                     .frame(width: dimension / 4, height: dimension / 4)
-                    .rotationEffect(.degrees(rotations[5]))
+                    .rotationEffect(.degrees(self.shuffledDiceLettersAndRotations[5].rotation))
 
-                Text(self.shuffledDiceLetters[6])
+                Text(self.shuffledDiceLettersAndRotations[6].text)
                     .font(.largeTitle)
                     .fontWeight(.black)
                     .frame(width: dimension / 4, height: dimension / 4)
-                    .rotationEffect(.degrees(rotations[6]))
+                    .rotationEffect(.degrees(self.shuffledDiceLettersAndRotations[6].rotation))
 
-                Text(self.shuffledDiceLetters[7])
+                Text(self.shuffledDiceLettersAndRotations[7].text)
                     .font(.largeTitle)
                     .fontWeight(.black)
                     .frame(width: dimension / 4, height: dimension / 4)
-                    .rotationEffect(.degrees(rotations[7]))
+                    .rotationEffect(.degrees(self.shuffledDiceLettersAndRotations[7].rotation))
             }
 
             HStack(spacing: 0) {
-                Text(self.shuffledDiceLetters[8])
+                Text(self.shuffledDiceLettersAndRotations[8].text)
                     .font(.largeTitle)
                     .fontWeight(.black)
                     .frame(width: dimension / 4, height: dimension / 4)
-                    .rotationEffect(.degrees(rotations[8]))
+                    .rotationEffect(.degrees(self.shuffledDiceLettersAndRotations[8].rotation))
 
-                Text(self.shuffledDiceLetters[9])
+                Text(self.shuffledDiceLettersAndRotations[9].text)
                     .font(.largeTitle)
                     .fontWeight(.black)
                     .frame(width: dimension / 4, height: dimension / 4)
-                    .rotationEffect(.degrees(rotations[9]))
+                    .rotationEffect(.degrees(self.shuffledDiceLettersAndRotations[9].rotation))
 
-                Text(self.shuffledDiceLetters[10])
+                Text(self.shuffledDiceLettersAndRotations[10].text)
                     .font(.largeTitle)
                     .fontWeight(.black)
                     .frame(width: dimension / 4, height: dimension / 4)
-                    .rotationEffect(.degrees(rotations[10]))
+                    .rotationEffect(.degrees(self.shuffledDiceLettersAndRotations[10].rotation))
 
-                Text(self.shuffledDiceLetters[11])
+                Text(self.shuffledDiceLettersAndRotations[11].text)
                     .font(.largeTitle)
                     .fontWeight(.black)
                     .frame(width: dimension / 4, height: dimension / 4)
-                    .rotationEffect(.degrees(rotations[11]))
+                    .rotationEffect(.degrees(self.shuffledDiceLettersAndRotations[11].rotation))
             }
 
             HStack(spacing: 0) {
-                Text(self.shuffledDiceLetters[12])
+                Text(self.shuffledDiceLettersAndRotations[12].text)
                     .font(.largeTitle)
                     .fontWeight(.black)
                     .frame(width: dimension / 4, height: dimension / 4)
-                    .rotationEffect(.degrees(rotations[12]))
+                    .rotationEffect(.degrees(self.shuffledDiceLettersAndRotations[12].rotation))
 
-                Text(self.shuffledDiceLetters[13])
+                Text(self.shuffledDiceLettersAndRotations[13].text)
                     .font(.largeTitle)
                     .fontWeight(.black)
                     .frame(width: dimension / 4, height: dimension / 4)
-                    .rotationEffect(.degrees(rotations[13]))
+                    .rotationEffect(.degrees(self.shuffledDiceLettersAndRotations[13].rotation))
 
-                Text(self.shuffledDiceLetters[14])
+                Text(self.shuffledDiceLettersAndRotations[14].text)
                     .font(.largeTitle)
                     .fontWeight(.black)
                     .frame(width: dimension / 4, height: dimension / 4)
-                    .rotationEffect(.degrees(rotations[14]))
+                    .rotationEffect(.degrees(self.shuffledDiceLettersAndRotations[14].rotation))
 
-                Text(self.shuffledDiceLetters[15])
+                Text(self.shuffledDiceLettersAndRotations[15].text)
                     .font(.largeTitle)
                     .fontWeight(.black)
                     .frame(width: dimension / 4, height: dimension / 4)
-                    .rotationEffect(.degrees(rotations[15]))
+                    .rotationEffect(.degrees(self.shuffledDiceLettersAndRotations[15].rotation))
             }
         }  // end of VStack
     }
