@@ -10,5 +10,8 @@ at the time of writing, so finding documentation (even official) was a bit of a 
 - SFSymbols compatibility (in this app, the two symbols at the beginning of the buttons)
 
 iOS Dark Mode | iOS Light Mode | Time's up alert
---------------|----------------|-----------------
-![-](https://imgur.com/dEIg6oo.png) | ![-](https://imgur.com/gGhEzNi.png) | ![-](https://imgur.com/EQk6VQN.png)
+--------------|----------------|------------
+![-](https://imgur.com/CeK1pHk.png) | ![-](https://imgur.com/koRkQzQ.png) | ![-](https://imgur.com/GyBXVEZ.png)
+
+### Overview
+![-](https://media.giphy.com/media/TfFLAHJxDJEFMBm16M/giphy.gif)
